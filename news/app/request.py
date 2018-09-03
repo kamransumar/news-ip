@@ -22,6 +22,7 @@ api_url = app.config['NEWS_API_SOURCE_URL']
 
 def get_url():
     get_url = api_url.format(api_key)
+    print(get_url)
 
     with urllib.request.urlopen(get_url) as source:
         data = source.read()

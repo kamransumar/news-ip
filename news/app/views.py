@@ -12,5 +12,6 @@ def index():
     popular_sources = get_url()
     print(popular_sources)
     title = 'News Junction'
+    sources = popular_sources
 
-    return render_template('index.html', title=title, popular=popular_sources)
+    return render_template('index.html', title=title, popular=sources)
