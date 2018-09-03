@@ -1,6 +1,6 @@
 from app import app
 from .config import Config
-from .models import source
+from .models import source, articles
 import urllib
 import json
 import ssl
@@ -14,10 +14,11 @@ else:
     ssl._create_default_https_context = _create_unverified_https_context
 
 Source = source.Source
-
+Articles = articles.Articles
 # Getting api key
 api_key = app.config['NEWS_API_KEY']
 api_url = app.config['NEWS_API_SOURCE_URL']
+api_articles = app.config[' NEWS_API_ARTICLES']
 
 
 def get_url():
@@ -52,3 +53,37 @@ def process_source(sources_list):
             sources.append(source_object)
 
     return sources
+
+
+def get_articles(id):
+    get_articles = api_articles.format(id, api_key)
+    print(get_articles)
+
+    with urllib.request.urlopen(get_articles) as source:
+        data = source.read()
+        data = json.loads(data)
+        print(data)
+
+        articles = None
+
+        if data['articles']:
+            articles_list = data['articles']
+            articles = process_articles(articles_list)
+
+    return articles
+
+
+def process_articles(articles_list):
+    articles = []
+    for article in articles_list:
+        name = article.get('name')
+        author = article.get('author')
+        description = article.get('description')
+        url_img = article.get('url_img')
+        url = article.get('url')
+
+        if url:
+            article_object = Articles(name, author, description, url_img, url)
+            article.append(article_object)
+
+    return articles
