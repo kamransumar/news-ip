@@ -18,7 +18,7 @@ Articles = articles.Articles
 # Getting api key
 api_key = app.config['NEWS_API_KEY']
 api_url = app.config['NEWS_API_SOURCE_URL']
-api_articles = app.config[' NEWS_API_ARTICLES']
+api_articles = app.config['NEWS_API_ARTICLES']
 
 
 def get_url():
@@ -79,11 +79,12 @@ def process_articles(articles_list):
         name = article.get('name')
         author = article.get('author')
         description = article.get('description')
-        url_img = article.get('url_img')
+        urlToImage = article.get('urlToImage')
         url = article.get('url')
 
         if url:
-            article_object = Articles(name, author, description, url_img, url)
-            article.append(article_object)
+            article_object = Articles(
+                name, author, description, urlToImage, url)
+            articles.append(article_object)
 
     return articles
